@@ -248,10 +248,10 @@ resultados_grid_search <- data.table()
 
 # Complete los valores que se van a combinar para cada parámetro a explorar
 
-for (cp in c(-1, 0.01)) {
-for (md in c(5, 10)) {
-for (ms in c(1, 50)) {
-for (mb in c(1, as.integer(ms / 2))) {
+for (cp in c(-1,seq(0.01,0.1,0.01))) {
+for (md in seq(4, 16, 1)) {
+for (ms in c( 1000, 800, 600, 400, 200, 100, 50, 20, 10 )) {
+for (mb in seq(5, as.integer(ms / 2),50)) {
 
     t0 <- Sys.time()
     gan_semillas <- c()
