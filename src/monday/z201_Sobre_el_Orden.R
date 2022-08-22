@@ -176,6 +176,10 @@ print(hojasordenadas)
 # - Puede pasar que dos hojas tengan la misma probabilidad, escriba una query 
 #   que las agrupe.
 
+# probabilidad no evento
+hojasbinario[, p_noevento := noevento / (evento + noevento)]
+#eventos con misma probabilidad: pendiente
+
 ## Preguntas
 ## - ¿Cómo ve la relación entre la probabilidad ordenada y la hojas con
 ##   ganancia?
@@ -290,3 +294,44 @@ ggplot(hojasordenadas, aes(x = p_evento, y = acc)) +
 ##   Por esto mismo, a alguien se le ocurrió el F-Beta. Construya esta última
 ##   para varios Betas.
 ## - ¿Hay algún Beta que tenga un **punto de corte** similar al nuestro?
+
+# Curva F1 score
+hojasordenadas[, f1 := ((tp) / (tp + 0.5*(fp + fn)))]
+ggplot(hojasordenadas, aes(x = p_evento, y = f1)) +
+  geom_line(lwd = 1)
+
+# Curva beta = 2
+beta = 2
+hojasordenadas[, f2 := ((1+beta**2)*(tp) / ((1+beta**2)*tp + (beta**2)*fn + fp))]
+ggplot(hojasordenadas, aes(x = p_evento, y = f2)) +
+  geom_line(lwd = 1)
+
+# Curva beta = 4
+beta = 4
+hojasordenadas[, f4 := ((1+beta**2)*(tp) / ((1+beta**2)*tp + (beta**2)*fn + fp))]
+ggplot(hojasordenadas, aes(x = p_evento, y = f4)) +
+  geom_line(lwd = 1)
+
+# Curva beta = 8
+beta = 8
+hojasordenadas[, f8 := ((1+beta**2)*(tp) / ((1+beta**2)*tp + (beta**2)*fn + fp))]
+ggplot(hojasordenadas, aes(x = p_evento, y = f8)) +
+  geom_line(lwd = 1)
+
+# Curva beta = 0.5
+beta = 0.5
+hojasordenadas[, f0p5 := ((1+beta**2)*(tp) / ((1+beta**2)*tp + (beta**2)*fn + fp))]
+ggplot(hojasordenadas, aes(x = p_evento, y = f0p5)) +
+  geom_line(lwd = 1)
+
+# Curva beta = 0.5
+beta = 0.25
+hojasordenadas[, f0p25 := ((1+beta**2)*(tp) / ((1+beta**2)*tp + (beta**2)*fn + fp))]
+ggplot(hojasordenadas, aes(x = p_evento, y = f0p25)) +
+  geom_line(lwd = 1)
+
+# Curva beta = 0.5
+beta = 0.125
+hojasordenadas[, f0p125 := ((1+beta**2)*(tp) / ((1+beta**2)*tp + (beta**2)*fn + fp))]
+ggplot(hojasordenadas, aes(x = p_evento, y = f0p125)) +
+  geom_line(lwd = 1)

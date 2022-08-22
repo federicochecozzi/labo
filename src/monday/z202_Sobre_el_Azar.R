@@ -59,6 +59,24 @@ dtest   <-  dataset[-in_training, ]
 ##   nuestro dataset con una que no la sea.
 ## - ¿Tiene realemente alguna ventaja la partición estratificada ?
 
+#comparación de distribuciones estratificadas y no estratificadas: son parecidas
+nr <- dataset[,.N]
+in_training2 <- sample(1:nr, size = 0.7*nr)
+
+dtrain2  <-  dataset[in_training2, ]
+dtest2   <-  dataset[-in_training2, ]
+
+
+dtrain[clase_binaria == "noevento",.N]
+dtrain[clase_binaria == "evento",.N]
+dtest[clase_binaria == "noevento",.N]
+dtest[clase_binaria == "evento",.N]
+
+dtrain2[clase_binaria == "noevento",.N]
+dtrain2[clase_binaria == "evento",.N]
+dtest2[clase_binaria == "noevento",.N]
+dtest2[clase_binaria == "evento",.N]
+
 ## ---------------------------
 ## Step 2: Armando el primer modelo particionado
 ## ---------------------------
