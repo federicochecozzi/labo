@@ -19,9 +19,9 @@ require("ggplot2")
 require("dplyr")
 
 # Poner la carpeta de la materia de SU computadora local
-setwd("/home/aleb/dmeyf2022")
+setwd("C:\\Users\\tiama\\OneDrive\\Documentos\\DMEyF_2022")
 # Poner sus semillas
-semillas <- c(17, 19, 23, 29, 31)
+semillas <- c(671017, 273107, 827251, 967693, 247591)
 
 # Cargamos el dataset
 dataset <- fread("./datasets/competencia1_2022.csv")
@@ -73,9 +73,9 @@ print(modelo$variable.importance)
 
 
 ## Preguntas
-## - ¿Cuáles son las variables más importantes para el modelo?
-## - ¿Cómo calcula RPART la importancia de una variable?
-## - ¿Es la única forma de calcular la importancia de una variable?
+## - ¿Cuáles son las variables más importantes para el modelo? ctrx_quarter, mcuentas_saldo, active_quarter, mprestamos_personales, etc.
+## - ¿Cómo calcula RPART la importancia de una variable? Número de splits
+## - ¿Es la única forma de calcular la importancia de una variable? Podría haber sido information gain u otro
 
 ## ---------------------------
 ## Step 2: Datos nulos
@@ -87,8 +87,9 @@ print(modelo$variable.importance)
 summary(modelo)
 
 ## Preguntas
-## - ¿Cómo operó con la variable nula?
-## - ¿Hace falta imputar las variables para que el árbol abra?
+## - ¿Cómo operó con la variable nula? 
+## - ¿Hace falta imputar las variables para que el árbol abra? A veces el árbol puede procesarlo solo, dependiendo del algoritmo.
+# rpart usa variables subrogadas (variables con estructura de corte similar) como alternativa en caso de nulo
 
 ## ---------------------------
 ## Step 3: Datos nulos - Metiendo mano
@@ -160,8 +161,8 @@ calcular_ganancia(modelo3, dtest)
 ## Preguntas
 ## - ¿Son muchos los casos nulos?
 ## - En mi caso aparenta una mejora, con más casos cree que esa mejora se
-##   mantendría 
-## - ¿Existe otro valor mejor que la media para imputar?
+##   mantendría: no necesariamente
+## - ¿Existe otro valor mejor que la media para imputar? Posiblemente, hay que buscarlo
 
 ## ---------------------------
 ## Step 5: Datos nulos - Midiendo bien
@@ -178,6 +179,16 @@ experimento <- function() {
             list = FALSE)
         train  <-  dataset[in_training, ]
         test   <-  dataset[-in_training, ]
+        
+        mean_Visa_fechaalta <- mean(train$Visa_fechaalta, na.rm = T)
+        # Imputamos los nulos de nuestra variable con la media
+        train[, Visa_fechaalta_2 := ifelse(is.na(Visa_fechaalta), 
+                                            mean_Visa_fechaalta,
+                                            Visa_fechaalta)] 
+        
+        test[, Visa_fechaalta_2 := ifelse(is.na(Visa_fechaalta), 
+                                           mean_Visa_fechaalta,
+                                           Visa_fechaalta)] 
 
         r <- rpart(clase_binaria ~ .,
                     data = train,
@@ -192,10 +203,12 @@ experimento <- function() {
     mean(gan)
 }
 
+experimento()
+
 # Veamos la 
 ## Preguntas
 ## - ¿Qué sucede si una transformación que depende del dataset no se aplica de
-##   esta manera?
+##   esta manera? Puede verse influenciado por cómo se dividió en train y test
 ## - A como funciona el rpart ¿Qué decisión toma sobre esta variable?
 
 ## ---------------------------
@@ -219,7 +232,7 @@ calcular_ganancia(modelo4, dtest)
 
 
 ## Preguntas
-## - ¿Por qué no empeora el modelo cuándo metemos variables correlacionadas?
+## - ¿Por qué no empeora el modelo cuándo metemos variables correlacionadas? Dan la misma información
 
 ## ---------------------------
 ## Step 5: Outliers
@@ -261,14 +274,14 @@ print(modelo_cq_2)
 
 ## Preguntas
 ## - Mirando los puntos de corte de los dos modelos ¿Existe una relación
-##   matermática entre ellos?
-## - ¿Es útil una transformación monótona en los árboles de decisión?
+##   matermática entre ellos? El corte es transformado por log(x+1)
+## - ¿Es útil una transformación monótona en los árboles de decisión? No cambia el contenido de información de la variable
 
 ## ---------------------------
 ## Step 7: Outliers - Una más y no jodemos más 
 ## ---------------------------
 
-dtrain[, r_ctrx_quarter := ntile(ctrx_quarter, 10)]
+dtrain[, r_ctrx_quarter := ntile(ctrx_quarter, 10)]#útil para lidiar con la inflación (problemas de data drifting en general)
 dtest[, r_ctrx_quarter := ntile(ctrx_quarter, 10)]
 
 modelo_cq_4 <- rpart(clase_binaria ~ . - ctrx_quarter - ctrx_quarter_2 - Visa_fechaalta_2 - Visa_fechaalta_3,
@@ -300,7 +313,7 @@ mis_variables <- c("ctrx_quarter",
 
 prefix <- "r_"
 for (var in mis_variables) {
-    dtrain[, (paste(prefix, var, sep = "")) := ntile(get(var), 10)]
+    dtrain[, (paste(prefix, var, sep = "")) := ntile(get(var), 10)]#get permite obtener la variable a partir de su nombre
     dtest[, (paste(prefix, var, sep = "")) := ntile(get(var), 10)]
 }
 
@@ -332,8 +345,10 @@ modelo5 <- rpart(formula,
 
 print(modelo5$variable.importance)
 
+# a veces conviene remover la variable más importante para encontrar la estructura de los datos
+
 ## ---------------------------
-## Step 10: Embeddings (Caseros)
+## Step 10: Embeddings (Caseros) -> reducción dimensional
 ## ---------------------------
 
 # Hagamos interactuar algunas variables para ver si conseguimos alguna mejor
