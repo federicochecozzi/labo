@@ -251,7 +251,7 @@ quantile(dtrain$ctrx_quarter, probs = c(0,0.5, 0.75, 0.9, 0.95, 0.99, 1))
 ## Step 6: Outliers - Luchando 
 ## ---------------------------
 
-# Reduzcamos la enorme disperción usando un logaritmo
+# Reduzcamos la enorme dispersión usando un logaritmo
 dtrain[, ctrx_quarter_2 := log(ctrx_quarter + 1)]
 dtest[, ctrx_quarter_2 := log(ctrx_quarter + 1)]
 
