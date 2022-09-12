@@ -21,9 +21,9 @@ require("treeClust")
 require("ggplot2")
 
 # Poner la carpeta de la materia de SU computadora local
-setwd("/home/aleb/dmeyf2022")
+setwd("C:\\Users\\tiama\\OneDrive\\Documentos\\DMEyF_2022")
 # Poner sus semillas
-semillas <- c(17, 19, 23, 29, 31)
+semillas <- c(671017, 273107, 827251, 967693, 247591)
 
 # Cargamos el dataset
 dataset <- fread("./datasets/competencia1_2022.csv")
@@ -59,7 +59,7 @@ ggplot(dataset[mcuentas_saldo > 0 &
 
 ## Preguntas
 ## ¿Cómo funciona una árbol de decisión?
-## ¿Afecta a la separación de los árboles que las distribuciones sean similares?
+## ¿Afecta a la separación de los árboles que las distribuciones sean similares? No puede distinguirlas
 
 ## ---------------------------
 ## Step 3: Mezclando clases.
@@ -162,7 +162,7 @@ train_bin2 <- leaves_table(modelo_bin2, dtrain, "clase_binaria2")
 print(train_bin2)
 
 ## Preguntas
-## ¿Sigue siendo el punto de corte optimo 0.025?
+## ¿Sigue siendo el punto de corte optimo 0.025? No
 ## ¿Dejamos plata sobre la mesa?
 
 ## ---------------------------
@@ -228,7 +228,7 @@ print(res_bin2[, c("p", "n", "gan", "gan_acum", "te_n", "te_gan",
                   "te_gan_acum", "te_n_acum")])
 
 ## Preguntas
-## ¿Se mantiene el punto de corte en train como en test?
+## ¿Se mantiene el punto de corte en train como en test? No
 ## ¿Si tuviera que tomar una decisión, seguía usando el que dió train?
 
 ## ---------------------------
@@ -237,6 +237,8 @@ print(res_bin2[, c("p", "n", "gan", "gan_acum", "te_n", "te_gan",
 
 # Vamos a hacer un análisis un poco más abierto para elegir un punto de corte
 
+mgtr = c()
+mgte = c()
 
 for (s in semillas) {
     set.seed(s)
@@ -273,11 +275,20 @@ for (s in semillas) {
             , c("p", "gan", "gan_acum", "te_n", "te_gan",
                 "te_gan_acum", "te_n_acum")])
 
+    mgtr = c(mgtr,pos_max_gan_train)
+    mgte = c(mgte,pos_max_gan_test)
 }
+
+mgtr
+mgte
+mean(mgtr)
+sd(mgtr)
+mean(mgte)
+sd(mgte)
 
 ## Agregue estadísticos para tomar una mejor decisión.
 
 ## Preguntas - Active Learning
-## - ¿Qué estrategia piensa que puede ser útil para elegir el punto de corte?
+## - ¿Qué estrategia piensa que puede ser útil para elegir el punto de corte? Probar varios puntos de corte
 ## - ¿Para la búsqueda del mejor modelo que valor va a usar para la OB?
 ## - ¿Pros y contras de elegir los N mejores casos?

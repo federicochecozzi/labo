@@ -26,7 +26,7 @@ require("DiceKriging")
 require("mlrMBO")
 
 #aqui deben ir SUS semillas, se usan para  1-Repeated  (5-Fold Cross Validation)
-ksemilla_azar  <- c(102191)
+ksemilla_azar  <- c(671017, 273107, 827251, 967693, 247591)
 
 
 #Defino la  Optimizacion Bayesiana
@@ -173,7 +173,7 @@ EstimarGanancia  <- function( x )
 #------------------------------------------------------------------------------
 #Aqui empieza el programa
 
-setwd( "~/buckets/b1/" )
+setwd( "C:\\Users\\tiama\\OneDrive\\Documentos\\DMEyF_2022" )
 
 #cargo el dataset, aqui debe poner  SU RUTA
 dataset  <- fread("./datasets/competencia1_2022.csv")   #donde entreno
