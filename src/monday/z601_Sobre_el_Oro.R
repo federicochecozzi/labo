@@ -18,9 +18,9 @@ require("rpart")
 require("ggplot2")
 
 # Poner la carpeta de la materia de SU computadora local
-setwd("/home/aleb/dmeyf2022")
+setwd("C:\\Users\\tiama\\OneDrive\\Documentos\\DMEyF_2022")
 # Poner sus semillas
-semillas <- c(17, 19, 23, 29, 31)
+semillas <- c(671017, 273107, 827251, 967693, 247591)
 
 # Cargamos los datasets y nos quedamos solo con 202101 y 202103
 dataset <- fread("./datasets/competencia2_2022.csv.gz")
@@ -83,7 +83,7 @@ leaderboad
 summary(leaderboad)
 
 ## Preguntas
-## ¿Qué conclusiones saca al ver los valores?
+## ¿Qué conclusiones saca al ver los valores? Es posible quedarse con una parte fácil de predecir en el público
 ## - Respecto al valor real
 ## - Respecto a la relación entre el **público** y el **privado**
 
@@ -94,7 +94,7 @@ summary(leaderboad)
 df <- melt(leaderboad, measure.vars =  c("privado", "publico"))
 ggplot(df, aes(x = value, color = variable)) + geom_density()
 
-## Observaciones?
+## Observaciones? Privado tiene menos dispersión que el público
 
 ## ---------------------------
 ## Step 5: Compitiendo entre dos modelos
@@ -163,3 +163,7 @@ df3 <- melt(leaderboad2, measure.vars =  c("privado", "privado2"))
 ggplot(df3, aes(x = value, color = variable)) + geom_density()
 
 ## Active learning ... entender que pasa.
+
+#Estrategias posibles de entrenamiento para meses múltiples: 
+#entrenar con un mes, validar con otro y probar con uno más (walk forward validation)
+#dividir el último mes en validación y test

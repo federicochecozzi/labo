@@ -12,7 +12,7 @@
 ## - ¿Qué es un ensamble de modelos?
 ## - ¿Cómo tienen que ser los modelos dentro de un ensamble?
 ## - ¿Qué técnicas conoce para ensamblar modelos?
-## - ¿Por qué funcionan mejor los ensambles?
+## - ¿Por qué funcionan mejor los ensambles? Son más robustos al usar varios modelos combinados
 
 
 # Los ensambles pueden partir de modelos ya desarrollados, o de modelos que se
@@ -47,9 +47,9 @@ require("randomForest")
 require("lightgbm")
 
 # Poner la carpeta de la materia de SU computadora local
-setwd("/home/aleb/dmeyf2022")
+setwd("C:\\Users\\tiama\\OneDrive\\Documentos\\DMEyF_2022")
 # Poner sus semillas
-semillas <- c(17, 19, 23, 29, 31)
+semillas <- c(671017, 273107, 827251, 967693, 247591)
 
 # Cargamos los datasets y nos quedamos solo con 202101 y 202103
 dataset <- fread("./datasets/competencia2_2022.csv.gz")
@@ -70,7 +70,7 @@ dtrain  <-  enero[in_training, ]
 dtest   <-  enero[-in_training, ]
 
 # ranger no soporta, como lo hacen otras librerías, los missing values
-dtrain <-  na.roughfix(dtrain)
+dtrain <-  na.roughfix(dtrain) #imputa con la mediana/moda
 dtest <-  na.roughfix(dtest)
 
 # Cantidad de variables que abren por cada hoja
