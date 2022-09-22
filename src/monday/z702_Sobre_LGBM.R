@@ -20,9 +20,9 @@ require("ggplot2")
 require("lightgbm")
 
 # Poner la carpeta de la materia de SU computadora local
-setwd("/home/aleb/dmeyf2022")
+setwd("C:\\Users\\tiama\\OneDrive\\Documentos\\DMEyF_2022")
 # Poner sus semillas
-semillas <- c(17, 19, 23, 29, 31)
+semillas <- c(671017, 273107, 827251, 967693, 247591)
 
 # Cargamos los datasets y nos quedamos solo con 202101 y 202103
 dataset <- fread("./datasets/competencia2_2022.csv.gz")
@@ -102,13 +102,13 @@ model_lgbm_cv <- lgb.cv(
 
         # Variables de crecimiento del árbol.
         max_depth = 12, # -1 = No limitar
-        min_data_in_leaf = 4000,
+        min_data_in_leaf = 4000, #equivalente a min_bucket
         feature_pre_filter = FALSE, #feature_pre_filter: Evita que LightGBM deje de lado variables que considera malas.
         num_leaves = 100,
 
         # Parámetros que fueron sacados de los rf porque lo que anda se mete:
         feature_fraction = 0.50, # Porcentaje de columnas que van a usarse en un árbol
-        # feature_fraction_bynode si queremos que sea por nodo
+        # feature_fraction_bynode si queremos que sea por nodo como en random forest
         bagging_fraction = 1.0, # % de registros a considerar en cada árbol
         extra_tree = FALSE, # Los puntos de corte los elige al azar.
 
@@ -155,5 +155,5 @@ lgb.importance(model_lgm)
 
 ## ACTIVIDAD para la clase: Armar una Opt. Bayesiana para el LightGBM.
 ## Empezaran a recibir cada vez más soporte de código, algo que en la vida de
-## a deveras no va a pasar. Mis valientes C1 demustren estar preparados para la
+## a de veras no va a pasar. Mis valientes C1 demustren estar preparados para la
 ## calle haciendo su propia Opt Bay.

@@ -23,9 +23,9 @@ require("ggplot2")
 require("lightgbm")
 
 # Poner la carpeta de la materia de SU computadora local
-setwd("/home/aleb/dmeyf2022")
+setwd("C:\\Users\\tiama\\OneDrive\\Documentos\\DMEyF_2022")
 # Poner sus semillas
-semillas <- c(17, 19, 23, 29, 31)
+semillas <- c(671017, 273107, 827251, 967693, 247591)
 
 # Cargamos los datasets y nos quedamos solo con 202101 y 202103
 dataset <- fread("./datasets/competencia2_2022.csv.gz")
@@ -91,14 +91,14 @@ sum((marzo$pred[-split] > 0.025) * ifelse(marzo$clase_ternaria[-split] == "BAJA+
 # Vamos a mandar los N mejores casos, de a separaciones de M
 
 ## ---------------------------
-## Step 4: Buscando el mejor punto de corte en el leaderboard público.
+## Step 5: Buscando el mejor punto de corte en el leaderboard público.
 ## ---------------------------
 
 # Ordenamos el dataset segun su probabilidad de forma ascendente
 setorder(marzo, cols = -pred)
 
 # PROBAR MULTIPLES VALORES
-set.seed(semillas[3])
+set.seed(semillas[5])
 m <- 500
 f <- 2000
 t <- 12000
@@ -124,3 +124,4 @@ ggplot(leaderboad, aes(x = envio, y = valor, color = board)) + geom_line()
 ## en el leaderboard público que le de una estrategia para elegir la cantidad
 ## adecuada para ganar maximizar la ganancia del privado.
 
+#Máximos locales de una curva coinciden con los mínimos locales del otro (el público puede tener más o menos de una clase)
