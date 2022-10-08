@@ -1,0 +1,6 @@
+Correr inflation_adjusted_dataset.R para generar el dataset.
+
+Realizar una optimización bayesiana con bo_more_param3.R. 
+No importa que no se use el dataset ajustado por inflación debido a que se usa marzo como nivel base para los ajustes de inflación.
+
+Generar los archivos para subir a Kaggle con bo_more_eval3alt.R. Se hacen 9000 envíos.
