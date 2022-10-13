@@ -67,7 +67,7 @@ if( PARAM$lag1 )
 
 if( PARAM$delta1 )
 {
-  #creo los campos lags de orden 1
+  #creo los campos deltas de orden 1
   dataset[ , paste0( cols_lagueables, "_delta1") := .SD - shift(.SD, 1, NA, "lag"), 
            by= numero_de_cliente, 
            .SDcols= cols_lagueables ]
@@ -83,7 +83,7 @@ if( PARAM$lag2 )
 
 if( PARAM$delta2 )
 {
-  #creo los campos lags de orden 1
+  #creo los campos deltas de orden 1
   dataset[ , paste0( cols_lagueables, "_delta2") := .SD - shift(.SD, 2, NA, "lag"), 
            by= numero_de_cliente, 
            .SDcols= cols_lagueables ]
@@ -91,8 +91,9 @@ if( PARAM$delta2 )
 
 if( PARAM$bsofd )
 {
-  #creo los campos lags de orden 1
-  dataset[ , paste0( cols_lagueables, "_bsofd") := .SD - 2*shift(.SD, 1, NA, "lag") + shift(.SD, 2, NA, "lag"), 
+  #creo los campos bsofd
+  #shift devuelve una lista así que no se puede multiplicar por 2, en ese caso es más fácil multiplicar .SD primero
+  dataset[ , paste0( cols_lagueables, "_bsofd") := .SD - shift(2*.SD, 1, NA, "lag") + shift(.SD, 2, NA, "lag"), 
            by= numero_de_cliente, 
            .SDcols= cols_lagueables ]
 }
