@@ -99,6 +99,6 @@ if( PARAM$bsofd )
 #------------------------------------------------------------------------------
 #grabo el dataset
 fwrite( dataset,
-        dataset.csv.gz,
+        "dataset.csv.gz",
         logical01= TRUE,
         sep= "," )
