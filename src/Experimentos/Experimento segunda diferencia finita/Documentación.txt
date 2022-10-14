@@ -1,0 +1,3 @@
+Experimentos: 
+Serie 777001z: experimentos con el dataset más delta1
+Serie 777002z: experimentos con el dataset más bsofd
