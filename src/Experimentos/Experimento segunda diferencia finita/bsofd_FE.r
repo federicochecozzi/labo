@@ -9,18 +9,19 @@ rm( list=ls() )  #remove all objects
 gc()             #garbage collection
 
 require("data.table")
+require("Rcpp")
 
 #Parametros del script
 PARAM  <- list()
-PARAM$experimento <- "FE777001z" #carpeta para datasets
+PARAM$experimento <- "FE777003z" #carpeta para datasets
 
 PARAM$exp_input  <- "DR9141"
 
-PARAM$lag1    <- TRUE
+PARAM$lag1    <- FALSE
 PARAM$lag2    <- FALSE
 PARAM$delta1  <- FALSE
 PARAM$delta2  <- FALSE
-#Pendiente: agregar solo tendencia si queda tiempo
+PARAM$Tendencias <- TRUE
 PARAM$bsofd   <- FALSE #backward second order finite difference
 # FIN Parametros del script
 
@@ -32,6 +33,95 @@ options(error = function() {
   stop("exiting after script error") 
 })
 
+#------------------------------------------------------------------------------
+#se calculan para los 6 meses previos ls tendencia calculada con cuadrados minimos
+
+cppFunction('NumericVector fhistC(NumericVector pcolumna, IntegerVector pdesde ) 
+{
+  /* Aqui se cargan los valores para la regresion */
+  double  x[100] ;
+  double  y[100] ;
+
+  int n = pcolumna.size();
+  NumericVector out( n );
+
+  for(int i = 0; i < n; i++)
+  {
+    int  libre    = 0 ;
+    int  xvalor   = 1 ;
+
+    for( int j= pdesde[i]-1;  j<=i; j++ )
+    {
+       double a = pcolumna[j] ;
+
+       if( !R_IsNA( a ) ) 
+       {
+          y[ libre ]= a ;
+          x[ libre ]= xvalor ;
+          libre++ ;
+       }
+
+       xvalor++ ;
+    }
+
+    /* Si hay al menos dos valores */
+    if( libre > 1 )
+    {
+      double  xsum  = x[0] ;
+      double  ysum  = y[0] ;
+      double  xysum = xsum * ysum ;
+      double  xxsum = xsum * xsum ;
+
+      for( int h=1; h<libre; h++)
+      { 
+        xsum  += x[h] ;
+        ysum  += y[h] ; 
+        xysum += x[h]*y[h] ;
+        xxsum += x[h]*x[h] ;
+      }
+
+      out[ i ]  =  (libre*xysum - xsum*ysum)/(libre*xxsum -xsum*xsum) ;
+    }
+    else
+    {
+      out[ i ]  =  NA_REAL ; 
+    }
+  }
+
+  return  out;
+}')
+
+#------------------------------------------------------------------------------
+#calcula la tendencia de las variables cols de los ultimos 6 meses
+#la tendencia es la pendiente de la recta que ajusta por cuadrados minimos
+#La funcionalidad de ratioavg es autoria de  Daiana Sparta,  UAustral  2021
+
+Tendencia  <- function( dataset, cols, ventana=6)
+{
+  gc()
+  #Esta es la cantidad de meses que utilizo para la historia
+  ventana_regresion  <- ventana
+  
+  last  <- nrow( dataset )
+  
+  #creo el vector_desde que indica cada ventana
+  #de esta forma se acelera el procesamiento ya que lo hago una sola vez
+  vector_ids   <- dataset$numero_de_cliente
+  
+  vector_desde  <- seq( -ventana_regresion+2,  nrow(dataset)-ventana_regresion+1 )
+  vector_desde[ 1:ventana_regresion ]  <-  1
+  
+  for( i in 2:last )  if( vector_ids[ i-1 ] !=  vector_ids[ i ] ) {  vector_desde[i] <-  i }
+  for( i in 2:last )  if( vector_desde[i] < vector_desde[i-1] )  {  vector_desde[i] <-  vector_desde[i-1] }
+  
+  for(  campo  in   cols )
+  {
+    nueva_col     <- fhistC( dataset[ , get(campo) ], vector_desde ) 
+    dataset[ , paste0( campo, "_tend", ventana) := nueva_col[ 1:last ]  ]
+    #if(tendencia)  dataset[ , paste0( campo, "_tend", ventana) := nueva_col[ (0*last +1):(1*last) ]  ]
+  }
+  
+}
 #------------------------------------------------------------------------------
 #Aqui empieza el programa
 
@@ -88,6 +178,16 @@ if( PARAM$delta2 )
            by= numero_de_cliente, 
            .SDcols= cols_lagueables ]
 }
+
+#--------------------------------------
+#agrego las tendencias
+if( PARAM$Tendencias )
+{
+  Tendencia( dataset, 
+              cols= cols_lagueables,
+              ventana=   6)
+}
+
 
 if( PARAM$bsofd )
 {
