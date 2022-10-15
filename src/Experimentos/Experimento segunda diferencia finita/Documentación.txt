@@ -1,4 +1,7 @@
 Experimentos: 
-Serie 777001z: experimentos con el dataset más delta1
-Serie 777002z: experimentos con el dataset más bsofd
-Serie 777003z: experimentos con el dataset más tend6
+Serie 777001z: experimentos con el dataset más delta1 en abril de 2019
+Serie 777002z: experimentos con el dataset más bsofd en abril de 2019
+Serie 777003z: experimentos con el dataset más tend6 en abril de 2019
+Serie 777001zalt: experimentos con el dataset más delta1 en marzo de 2021
+Serie 777002zalt: experimentos con el dataset más bsofd en marzo de 2021
+Serie 777003zalt: experimentos con el dataset más tend6 en marzo de 2021
