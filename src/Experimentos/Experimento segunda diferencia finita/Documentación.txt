@@ -5,3 +5,12 @@ Serie 777003z: experimentos con el dataset más tend6 en abril de 2019
 Serie 777001zalt: experimentos con el dataset más delta1 en marzo de 2021
 Serie 777002zalt: experimentos con el dataset más bsofd en marzo de 2021
 Serie 777003zalt: experimentos con el dataset más tend6 en marzo de 2021
+
+Scripts que correr:
+
+Correr en orden z906_reparar_dataset.r, z914_corregir_drifting.r, delta1_FE.r, bsofd_FE.r, tend6_FE.r, 
+bo_delta1.r, bo_bsofd.r, bo_tend6.r, bo_delta1alt.r, bo_bsofdalt.r, bo_tend6alt.r. 
+
+Con los resultados de los anteriores (HT_param_reader.r), correr ga_delta1.r, ga_bsofd.r, ga_tend6.r, ga_delta1alt.r, ga_bsofdalt.r, ga_tend6alt.r. 
+
+Y por último correr feature_comparison.r para generar los gráficos con los resultados.

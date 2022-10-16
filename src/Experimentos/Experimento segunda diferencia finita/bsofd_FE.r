@@ -13,7 +13,7 @@ require("Rcpp")
 
 #Parametros del script
 PARAM  <- list()
-PARAM$experimento <- "FE777003z" #carpeta para datasets
+PARAM$experimento <- "FE777002z" #carpeta para datasets
 
 PARAM$exp_input  <- "DR9141"
 
@@ -21,8 +21,8 @@ PARAM$lag1    <- FALSE
 PARAM$lag2    <- FALSE
 PARAM$delta1  <- FALSE
 PARAM$delta2  <- FALSE
-PARAM$Tendencias <- TRUE
-PARAM$bsofd   <- FALSE #backward second order finite difference
+PARAM$Tendencias <- FALSE
+PARAM$bsofd   <- TRUE #backward second order finite difference
 # FIN Parametros del script
 
 #------------------------------------------------------------------------------
