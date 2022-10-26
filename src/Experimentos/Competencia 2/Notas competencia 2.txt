@@ -1,0 +1,46 @@
+              fecha objective metric first_metric_only boost_from_average feature_pre_filter verbosity max_depth
+841 20221002 044541    binary custom              TRUE               TRUE              FALSE      -100        -1
+    min_gain_to_split num_iterations force_row_wise   seed learning_rate feature_fraction lambda_l1 lambda_l2
+841                 0            578           TRUE 273107      0.010802        0.5590244  13.24962  1.679275
+    min_data_in_leaf num_leaves envios max_bin ganancia ganancia_prom iteracion
+841              814       2763   8526     301 27430000      27150000       841
+
+(canarios y feature engineering)
+Recommended parameters:
+learning_rate=0.0848; feature_fraction=0.691; lambda_l1=1.63; lambda_l2=79.4; min_data_in_leaf=973; num_leaves=2980; envios=8832; max_bin=98
+Objective: y = 27700000.000
+
+(xgboost y algo de feature engineering)
+Recommended parameters:
+learning_rate=0.171; feature_fraction=0.782; lambda_l1=0.00408; lambda_l2=92.4; min_data_in_leaf=934; num_leaves=1172; envios=8575; max_bin=29
+Objective: y = 27970000.000
+
+(menos hiperparámetros)
+Recommended parameters:
+learning_rate=0.0259; feature_fraction=0.438; lambda_l1=0.0317; lambda_l2=38; min_data_in_leaf=559; num_leaves=2991; envios=9515; max_bin=94
+Objective: y = 28010000.000
+
+(con múltiples hiperparámetros)
+Recommended parameters:
+learning_rate=0.00533; feature_fraction=0.843; lambda_l1=0.144; lambda_l2=52.8; min_gain_to_split=0.0163; min_data_in_leaf=1703; num_leaves=452; max_depth=10; envios=9114; max_bin=368
+Objective: y = 27860000.000
+
+(con feature engineering de la competencia 1)
+Recommended parameters:
+learning_rate=0.00503; feature_fraction=0.205; min_data_in_leaf=309; num_leaves=1024; envios=8527
+Objective: y = 27910000.000
+
+(script base)
+learning_rate=0.0168; feature_fraction=0.601; min_data_in_leaf=1264; num_leaves=1023; envios=8883
+Objective: y = 28000000.000
+
+
+https://towardsdatascience.com/kagglers-guide-to-lightgbm-hyperparameter-tuning-with-optuna-in-2021-ed048d9838b5
+
+https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html
+
+https://lightgbm.readthedocs.io/en/latest/Parameters.html
+
+http://devdoc.net/bigdata/LightGBM-doc-2.2.2/Parameters-Tuning.html
+
+https://neptune.ai/blog/lightgbm-parameters-guide
