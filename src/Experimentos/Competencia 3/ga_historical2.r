@@ -83,11 +83,6 @@ primos  <- generate_primes(min=100000, max=1000000)  #genero TODOS los numeros p
 set.seed( PARAM$semilla1) #seteo la semilla que controla al sample de los primos
 ksemillas_modelo  <- sample(primos)[ 1:PARAM$semillas_modelo ]   #me quedo con PARAM$semillerio primos al azar
 
-
-tb_cortes  <- data.table(  semilla= integer(),
-                           corte= integer(),
-                           ganancia= numeric() )
-
 #genero un modelo para cada uno de las modelos_qty MEJORES iteraciones de la Bayesian Optimization
 for( i in  1:PARAM$modelos )
 {
@@ -132,6 +127,11 @@ for( i in  1:PARAM$modelos )
   
     #genero el modelo entrenando en los datos finales
     set.seed( parametros$seed )
+    
+    tb_cortes  <- data.table(  semilla= integer(),
+                               corte= integer(),
+                               ganancia= numeric() )
+    
     modelo_final  <- lightgbm( data= dtrain,
                              param=  parametros,
                              verbose= -100 )
@@ -141,7 +141,7 @@ for( i in  1:PARAM$modelos )
                             data.matrix( dfuture[ , campos_buenos, with=FALSE ] ) )
     
     #genero la tabla de entrega
-    tb_entrega  <- dfuture[ , ganancia ]
+    tb_entrega  <- dfuture[ , list(ganancia) ]
     tb_entrega[  , prob := prediccion ]
     
     #ordeno por probabilidad descendente
@@ -180,9 +180,10 @@ for( i in  1:PARAM$modelos )
     #borro y limpio la memoria para la vuelta siguiente del for
     rm(tb_entrega)
     rm(tb_cortes)
-    rm( parametros )
-    rm( dtrain )
     gc()
   
   }
+  rm( parametros )
+  rm( dtrain )
+  gc()
 }

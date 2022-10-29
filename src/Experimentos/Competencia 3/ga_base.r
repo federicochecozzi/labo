@@ -112,19 +112,6 @@ for( i in  1:PARAM$modelos )
   parametros$ganancia     <- NULL
   parametros$iteracion_bayesiana  <- NULL
   
-  if( ! ("leaf_size_log" %in% names(parametros) ) )  stop( "El Hyperparameter Tuning debe tener en BO_log.txt  el pseudo hiperparametro  lead_size_log.\n" )
-  if( ! ("coverage" %in% names(parametros) ) ) stop( "El Hyperparameter Tuning debe tener en BO_log.txt  el pseudo hiperparametro  coverage.\n" )
-  
-  #Primero defino el tamaño de las hojas
-  parametros$min_data_in_leaf  <- pmax( 1,  round( nrow(dtrain) / ( 2.0 ^ parametros$leaf_size_log ))  )
-  #Luego la cantidad de hojas en funcion del valor anterior, el coverage, y la cantidad de registros
-  parametros$num_leaves  <-  pmin( 131072, pmax( 2,  round( parametros$coverage * nrow( dtrain ) / parametros$min_data_in_leaf ) ) )
-  cat( "min_data_in_leaf:", parametros$min_data_in_leaf,  ",  num_leaves:", parametros$num_leaves, "\n" )
-  
-  #ya no me hacen falta
-  parametros$leaf_size_log  <- NULL
-  parametros$coverage  <- NULL
-  
   for( semilla_modelo  in  ksemillas_modelo )
   {
     #Utilizo la semilla definida en este script
@@ -141,7 +128,7 @@ for( i in  1:PARAM$modelos )
                             data.matrix( dfuture[ , campos_buenos, with=FALSE ] ) )
     
     #genero la tabla de entrega
-    tb_entrega  <- dfuture[ , ganancia ]
+    tb_entrega  <- dfuture[ , lista(ganancia) ]
     tb_entrega[  , prob := prediccion ]
     
     #ordeno por probabilidad descendente
@@ -180,9 +167,10 @@ for( i in  1:PARAM$modelos )
     #borro y limpio la memoria para la vuelta siguiente del for
     rm(tb_entrega)
     rm(tb_cortes)
-    rm( parametros )
-    rm( dtrain )
     gc()
   
   }
+  rm( parametros )
+  rm( dtrain )
+  gc()
 }
