@@ -10,7 +10,7 @@ rm( list=ls() )  #remove all objects
 gc()             #garbage collection
 
 require("data.table")
-
+require("primes")
 require("lightgbm")
 
 #Parametros del script
