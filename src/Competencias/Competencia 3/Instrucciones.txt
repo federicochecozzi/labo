@@ -1,1 +1,1 @@
-Asumiendo que se corrió z906_reparar_dataset.r, correr rank_zero_drift.r, fe_historical1.r, ts_historical.r, ht_historical1.r y zz_historical1.r
+Asumiendo que se corrió z906_reparar_dataset.r, correr rank_zero_drift.r, fe_historical1.r, ts_historical.r, ht_historical1.r y zz_historical1.r. Se usó el tercer modelo generado por el script.
