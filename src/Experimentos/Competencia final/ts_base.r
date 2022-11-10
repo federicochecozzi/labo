@@ -19,13 +19,13 @@ PARAM$experimento <- "TS777001d"
 
 PARAM$exp_input  <- "FE777001d"
 
-PARAM$future       <- c( 202107 )
+PARAM$future       <- c( 202109 )
 
-PARAM$final_train  <- c( 201905,201906,201907,201908,201909,201910,201911,201912, 202011, 202012, 202101, 202102, 202103)
+PARAM$final_train  <- c( 201907,201908,201909,201910,201911,201912, 202011, 202012, 202101, 202102, 202103, 202104, 202105)
 
-PARAM$train$training     <- c( 201905,201906,201907,201908,201909,201910,201911,201912, 202011, 202012, 202101, 202102, 202103)
-PARAM$train$validation   <- c( 202104 )
-PARAM$train$testing      <- c( 202105 )
+PARAM$train$training     <- c( 201907,201908,201909,201910,201911,201912, 202011, 202012, 202101, 202102, 202103, 202104, 202105)
+PARAM$train$validation   <- c( 202106 )
+PARAM$train$testing      <- c( 202107 )
 
 PARAM$train$sampling_total  <- 1.0  # 1.0 significa que NO se hace sampling total,  0.3 es quedarse con el 30% de TODOS los registros
 PARAM$train$undersampling_mayoritaria  <- 0.4   # 1.0 significa NO undersampling ,  0.1  es quedarse con el 10% de los CONTINUA
