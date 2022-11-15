@@ -14,7 +14,7 @@ require("lightgbm")
 
 #Parametros del script
 PARAM  <- list()
-PARAM$experimento  <- "DR777001dalt"
+PARAM$experimento  <- "DR777001d"
 PARAM$dataset  <- "./exp/DR777001d/dataset.csv.gz"
 # FIN Parametros del script
 
