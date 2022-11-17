@@ -63,7 +63,7 @@ graficar_campo  <- function( campo, periodos_analisis )
   
   for( per in 2:length(periodos_analisis) )
   {
-    if(dataset[ foto_mes==per, sum(is.na(get(campo))) < .N ])
+    if(dataset[ foto_mes==periodos_analisis[per], sum(is.na(get(campo))) < .N ])
     {
       densidad_B  <- density( dataset[ foto_mes==periodos_analisis[ per ], get(campo) ],
                             kernel="gaussian", na.rm=TRUE )

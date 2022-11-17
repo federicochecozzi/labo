@@ -33,19 +33,23 @@ graficar_campo  <- function( campo, periodos_analisis )
     tb_quantiles  <- rbind( tb_quantiles, use.names=FALSE, as.list(qu) )
   }
   
-  xxmin  <- tb_quantiles[ , min( qmin ) ]
-  xxmax  <- tb_quantiles[ , max( qmax ) ]
+  xxmin  <- tb_quantiles[ , min( qmin, na.rm = TRUE ) ]
+  xxmax  <- tb_quantiles[ , max( qmax, na.rm = TRUE ) ]
   
   yymax  <- 0
   for( per in periodos_analisis )
   {
-    den  <- density( dataset[ foto_mes==per, get(campo) ],
-                     kernel="gaussian", na.rm=TRUE )
-    
-    mayor  <- max( den$y )
-    if( mayor > yymax ) yymax <- mayor 
+    if(dataset[ foto_mes==per, sum(is.na(get(campo))) < .N ])
+    {
+      den  <- density( dataset[ foto_mes==per, get(campo) ],
+                       kernel="gaussian", na.rm=TRUE )
+      
+      mayor  <- max( den$y )
+      if( mayor > yymax ) yymax <- mayor
+    }
   }
   
+  #evitar poner un mes como el primer período con columnas NA
   densidad_A  <- density( dataset[ foto_mes==periodos_analisis[1], get(campo) ],
                           kernel="gaussian", na.rm=TRUE )
   
@@ -59,10 +63,13 @@ graficar_campo  <- function( campo, periodos_analisis )
   
   for( per in 2:length(periodos_analisis) )
   {
-    densidad_B  <- density( dataset[ foto_mes==periodos_analisis[ per ], get(campo) ],
-                            kernel="gaussian", na.rm=TRUE )
-    
-    lines(densidad_B, col= GLOBAL_colores[per], lty=1)
+    if(dataset[ foto_mes==periodos_analisis[per], sum(is.na(get(campo))) < .N ])
+    {
+      densidad_B  <- density( dataset[ foto_mes==periodos_analisis[ per ], get(campo) ],
+                              kernel="gaussian", na.rm=TRUE )
+      
+      lines(densidad_B, col= GLOBAL_colores[per], lty=1)
+    }
   }
   
   legend(  "topright",  
@@ -117,7 +124,7 @@ campos_ordenados  <-  setdiff(  campos_ordenados,  c( "foto_mes","clase_ternaria
 dataset[  , foto_mes := as.character( foto_mes ) ]
 
 
-periodos_analisis  <- c( 201911, 201912, 202001, 202002, 202003, 202009, 202010, 202011, 202012, 202101, 202102)
+periodos_analisis  <- c( 202109, 201911, 201912, 202001, 202002, 202003, 202009, 202010, 202011, 202012, 202101, 202102)
 GLOBAL_colores <-  viridis_pal()(length( periodos_analisis ) )
 
 pdf("densidades_orignales.pdf")
