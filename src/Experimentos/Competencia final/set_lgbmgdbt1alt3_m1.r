@@ -50,11 +50,11 @@ arch_TS  <- paste0( base_dir, "exp/", PARAM$exp_input, "/TrainingStrategy.txt" )
 TS  <- readLines( arch_TS, warn=FALSE )
 
 #leo el dataset donde voy a entrenar el modelo final
-arch_dataset  <- paste0( base_dir, "exp/", TS, "/dataset_training.csv.gz" )
+arch_dataset  <- paste0( base_dir, "exp/", TS, "dataset_train_final.csv.gz" )
 dataset  <- fread( arch_dataset )
 
 #dataset donde voy a aplicar el modelo final
-dfuture <- dataset[ fold_test == 1L, ]
+dfuture <- dataset[ foto_mes == 202103, ]
 
 #defino la clase binaria
 dataset[ , clase01 := ifelse( clase_ternaria %in% c("BAJA+1","BAJA+2"), 1, 0 )  ]
@@ -105,9 +105,9 @@ for( ksemilla in ksemillas[PARAM$indice_inicio_semilla:PARAM$indice_fin_semilla]
   message("Creando dataset ")
   timestamp()
   #creo CADA VEZ el dataset de lightgbm
-  dtrain  <- lgb.Dataset( data=    data.matrix( dataset[fold_train == 1L, campos_buenos, with=FALSE] ),
-                          label=   dataset[fold_train == 1L, clase01],
-                          weight=  dataset[fold_train == 1L, ifelse( clase_ternaria %in% c("BAJA+2"), 1.0000001, 1.0)],
+  dtrain  <- lgb.Dataset( data=    data.matrix( dataset[ , campos_buenos, with=FALSE] ),
+                          label=   dataset[ , clase01],
+                          weight=  dataset[ , ifelse( clase_ternaria %in% c("BAJA+2"), 1.0000001, 1.0)],
                           free_raw_data= FALSE
   )
   timestamp()
