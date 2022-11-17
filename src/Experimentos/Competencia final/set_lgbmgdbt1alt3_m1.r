@@ -106,8 +106,8 @@ for( ksemilla in ksemillas[PARAM$indice_inicio_semilla:PARAM$indice_fin_semilla]
   timestamp()
   #creo CADA VEZ el dataset de lightgbm
   dtrain  <- lgb.Dataset( data=    data.matrix( dataset[fold_train == 1L, campos_buenos, with=FALSE] ),
-                          label=   dataset[ , clase01],
-                          weight=  dataset[ , ifelse( clase_ternaria %in% c("BAJA+2"), 1.0000001, 1.0)],
+                          label=   dataset[fold_train == 1L, clase01],
+                          weight=  dataset[fold_train == 1L, ifelse( clase_ternaria %in% c("BAJA+2"), 1.0000001, 1.0)],
                           free_raw_data= FALSE
   )
   timestamp()
