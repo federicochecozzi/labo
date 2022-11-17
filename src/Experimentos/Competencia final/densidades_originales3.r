@@ -33,8 +33,8 @@ graficar_campo  <- function( campo, periodos_analisis )
     tb_quantiles  <- rbind( tb_quantiles, use.names=FALSE, as.list(qu) )
   }
   
-  xxmin  <- tb_quantiles[ , min( qmin ) ]
-  xxmax  <- tb_quantiles[ , max( qmax ) ]
+  xxmin  <- tb_quantiles[ , min( qmin, na.rm = TRUE ) ]
+  xxmax  <- tb_quantiles[ , max( qmax, na.rm = TRUE ) ]
   
   yymax  <- 0
   for( per in periodos_analisis )
