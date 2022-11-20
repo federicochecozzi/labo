@@ -56,6 +56,8 @@ dataset  <- fread( arch_dataset )
 #dataset donde voy a aplicar el modelo final
 dfuture <- dataset[ foto_mes == 202103, ]
 
+dataset <- dataset[ fold_train == 1,]
+
 #defino la clase binaria
 dataset[ , clase01 := ifelse( clase_ternaria %in% c("BAJA+1","BAJA+2"), 1, 0 )  ]
 
