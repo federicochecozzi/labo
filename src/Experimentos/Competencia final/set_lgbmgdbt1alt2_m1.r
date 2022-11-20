@@ -50,7 +50,7 @@ arch_TS  <- paste0( base_dir, "exp/", PARAM$exp_input, "/TrainingStrategy.txt" )
 TS  <- readLines( arch_TS, warn=FALSE )
 
 #leo el dataset donde voy a entrenar el modelo final
-arch_dataset  <- paste0( base_dir, "exp/", TS, "/dataset_train_final.csv.gz" )
+arch_dataset  <- paste0( base_dir, "exp/", TS, "/dataset_training.csv.gz" )
 dataset  <- fread( arch_dataset )
 
 #dataset donde voy a aplicar el modelo final
