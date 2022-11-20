@@ -8,8 +8,8 @@ require("primes")
 
 #Parametros del script
 PARAM <- list()
-PARAM$experimento <- "TE777004d_m1"
-PARAM$exp_input <- "HT777004d"
+PARAM$experimento <- "TE777005d_m1"
+PARAM$exp_input <- "HT777005d"
 
 # PARAM$modelos  <- 2
 PARAM$modelo <- 1 # se usa el mejor de la OB, pero a futuro podria variar esto
@@ -54,7 +54,7 @@ arch_dataset  <- paste0( base_dir, "exp/", TS, "/dataset_training.csv.gz" )
 dataset  <- fread( arch_dataset )
 
 #dataset donde voy a aplicar el modelo final
-dfuture <- dataset[ foto_mes == 202103, ]
+dfuture <- dataset[ foto_mes == 202105, ]
 
 dataset <- dataset[ fold_train == 1,]
 
